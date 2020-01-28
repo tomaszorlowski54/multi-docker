@@ -9,10 +9,10 @@ script:
   - docker run torlowski/react-test npm test -- --coverage
 
 after_success:
-  - dcoker build -t torlowski/multi-client -f Dockerfile.prod ./client 
-  - dcoker build -t torlowski/multi-nginx -f Dockerfile.prod ./nginx
-  - dcoker build -t torlowski/multi-server -f Dockerfile.prod ./server
-  - dcoker build -t torlowski/multi-worker -f Dockerfile.prod ./worker
+  - docker build -t torlowski/multi-client -f Dockerfile.prod ./client 
+  - docker build -t torlowski/multi-nginx -f Dockerfile.prod ./nginx
+  - docker build -t torlowski/multi-server -f Dockerfile.prod ./server
+  - docker build -t torlowski/multi-worker -f Dockerfile.prod ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push torlowski/multi-client
   - docker push torlowski/multi-nginx
