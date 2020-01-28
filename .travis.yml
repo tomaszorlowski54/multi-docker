@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t torlowski/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run torlowski/react-test npm test -- --coverage
+
+after_success:
+  - dcoker build -t torlowski/multi-client ./client
+  - dcoker build -t torlowski/multi-nginx ./nginx
+  - dcoker build -t torlowski/multi-server ./server
+  - dcoker build -t torlowski/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push torlowski/multi-client
+  - docker push torlowski/multi-nginx
+  - docker push torlowski/multi-server
+  - docker push torlowski/multi-worker
